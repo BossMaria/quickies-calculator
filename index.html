@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Quickies — расчёт проекта</title>
+  <style>
+    :root{--ink:#171714;--paper:#f2f0e8;--acid:#d9ff43;--orange:#ff5b35;--line:#c9c6ba;--muted:#68675f;--white:#fff;--r:22px}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.35 Arial,Helvetica,sans-serif}
+    button,input{font:inherit}button{cursor:pointer}.wrap{width:min(1180px,calc(100% - 32px));margin:auto}
+    header{padding:22px 0;border-bottom:1px solid var(--line);position:sticky;top:0;background:rgba(242,240,232,.92);backdrop-filter:blur(12px);z-index:5}
+    nav{display:flex;justify-content:space-between;align-items:center}.logo{font-weight:900;font-size:25px;letter-spacing:-1.5px}.pill{font-size:13px;border:1px solid var(--ink);border-radius:999px;padding:7px 12px}
+    .hero{padding:72px 0 52px;display:grid;grid-template-columns:1.5fr .8fr;gap:30px;align-items:end}.eyebrow{text-transform:uppercase;font-size:12px;letter-spacing:1.8px;font-weight:700}
+    h1{font-size:clamp(48px,8vw,104px);line-height:.86;letter-spacing:-6px;margin:22px 0 28px;max-width:900px}.hero p{font-size:19px;max-width:640px;margin:0;color:var(--muted)}
+    .sticker{background:var(--acid);border:2px solid var(--ink);border-radius:50%;aspect-ratio:1;display:grid;place-content:center;text-align:center;transform:rotate(5deg);box-shadow:7px 7px 0 var(--ink)}.sticker b{font-size:38px;letter-spacing:-2px}.sticker span{font-size:12px;text-transform:uppercase;letter-spacing:1px}
+    .layout{display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:28px;align-items:start;padding-bottom:100px}.section{margin-bottom:48px}.section-head{display:flex;align-items:end;justify-content:space-between;border-bottom:2px solid var(--ink);padding-bottom:12px;margin-bottom:14px}.section h2{margin:0;font-size:30px;letter-spacing:-1px}.hint{color:var(--muted);font-size:13px}
+    .cards{display:grid;grid-template-columns:1fr 1fr;gap:12px}.card{display:block;position:relative;background:rgba(255,255,255,.45);border:1px solid var(--line);border-radius:var(--r);padding:20px;min-height:152px;transition:.18s}.card:hover{transform:translateY(-2px);border-color:var(--ink)}.card:has(input:checked){background:var(--acid);border-color:var(--ink);box-shadow:4px 4px 0 var(--ink)}
+    .card input{position:absolute;opacity:0}.check{position:absolute;right:18px;top:18px;width:25px;height:25px;border:1.5px solid var(--ink);border-radius:50%;display:grid;place-items:center}.card input:checked+.check:after{content:'✓';font-weight:900}.num{font-size:12px;font-weight:700;color:var(--muted)}.name{font-weight:800;font-size:20px;margin:24px 35px 8px 0;letter-spacing:-.4px}.desc{font-size:13px;color:var(--muted);max-width:92%}.price{font-weight:800;margin-top:12px}
+    .media-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.media{display:flex;gap:11px;align-items:center;border:1px solid var(--line);border-radius:16px;padding:14px;background:rgba(255,255,255,.45);min-height:70px;transition:.15s;position:relative}.media:hover{border-color:var(--ink);z-index:3}.media:has(input:checked){background:var(--ink);color:var(--white)}.media input{accent-color:var(--acid);width:18px;height:18px;flex:none}.media span{font-size:14px;font-weight:700}.media em{display:block;font-size:11px;font-style:normal;opacity:.6;margin-top:2px}.media .tip{display:none;position:absolute;left:10px;right:10px;top:calc(100% + 8px);background:var(--orange);color:white;border:1px solid var(--ink);border-radius:13px;padding:12px;font-size:12px;line-height:1.35;font-weight:500;box-shadow:4px 4px 0 var(--ink);z-index:9}.media:hover .tip,.media:focus-within .tip{display:block}.media.blocked{opacity:.45}.media.blocked:hover .tip{display:none}
+    .proposal{border:2px solid var(--ink);border-radius:24px;background:#fff;margin:8px 0 48px;overflow:hidden}.proposal summary{list-style:none;padding:24px 26px;font-size:24px;font-weight:900;cursor:pointer;display:flex;justify-content:space-between;align-items:center}.proposal summary::-webkit-details-marker{display:none}.proposal summary:after{content:'+';font-size:35px;line-height:1}.proposal[open] summary:after{content:'×'}.proposal-body{border-top:1px solid var(--line);padding:10px 26px 30px}.proposal-body h3{font-size:20px;margin:28px 0 8px}.proposal-body p,.proposal-body li{color:var(--muted);font-size:14px;line-height:1.55}.proposal-body ul{padding-left:20px}.proposal-lead{font-size:17px!important;color:var(--ink)!important}.proposal-note{background:var(--acid);color:var(--ink)!important;border-radius:14px;padding:15px 17px}.proposal-columns{display:grid;grid-template-columns:1fr 1fr;gap:0 30px}
+    aside{position:sticky;top:94px;background:var(--ink);color:var(--white);border-radius:28px;padding:26px;box-shadow:8px 8px 0 var(--orange)}.summary-top{display:flex;justify-content:space-between;align-items:center}.summary-top span{font-size:12px;text-transform:uppercase;letter-spacing:1.2px}.reset{color:white;background:none;border:0;text-decoration:underline;font-size:12px}.total{font-size:54px;font-weight:900;letter-spacing:-3px;margin:20px 0 4px}.total-note{font-size:12px;color:#aaa}.bar{height:7px;background:#3a3a35;border-radius:10px;margin:22px 0;overflow:hidden}.bar i{display:block;height:100%;background:var(--acid);width:0;transition:.25s}.picked{border-top:1px solid #444;border-bottom:1px solid #444;padding:15px 0;margin-bottom:18px;font-size:13px;color:#c9c9c2}.picked div{display:flex;justify-content:space-between;margin:7px 0}.picked b{color:white}.actions{display:grid;gap:9px}.btn{border:0;border-radius:13px;padding:14px 16px;font-weight:800}.primary{background:var(--acid);color:var(--ink)}.secondary{background:#31312d;color:white;border:1px solid #4a4a44}.fine{font-size:10px;color:#92928a;margin:16px 2px 0}
+    .toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,90px);background:var(--orange);color:#fff;padding:12px 18px;border-radius:999px;font-weight:700;transition:.25s;z-index:10;max-width:calc(100% - 30px);text-align:center}.toast.show{transform:translate(-50%,0)}
+    footer{border-top:1px solid var(--line);padding:26px 0 42px;color:var(--muted);font-size:12px}
+    @media(max-width:850px){header{position:relative}.hero{grid-template-columns:1fr;padding-top:48px}.sticker{width:190px}.layout{grid-template-columns:1fr}aside{position:relative;top:0;order:-1}.media-grid{grid-template-columns:1fr 1fr}h1{letter-spacing:-3px}}
+    @media(max-width:520px){.wrap{width:min(100% - 20px,1180px)}.cards,.media-grid,.proposal-columns{grid-template-columns:1fr}.hero{padding-top:38px}h1{font-size:52px}.sticker{width:150px}.total{font-size:46px}.proposal summary{font-size:20px;padding:20px}.proposal-body{padding:8px 20px 24px}}
+    @media print{header,.hero .sticker,.actions,.reset,.toast{display:none}.hero{padding:25px 0}.layout{grid-template-columns:1fr}.card:not(:has(input:checked)),.media:not(:has(input:checked)){display:none}aside{position:relative;top:0;box-shadow:none;break-inside:avoid}.section{break-inside:avoid}body{background:white}}
+  </style>
+</head>
+<body>
+  <header><div class="wrap"><nav><div class="logo">QUICKIES ↗</div><div class="pill">Калькулятор проекта</div></nav></div></header>
+  <main class="wrap">
+    <section class="hero"><div><div class="eyebrow">Визуальная айдентика · предложение</div><h1>Соберите свой Quickies</h1><p>Выберите нужные этапы и носители. Стоимость изменится сразу — так проще найти комфортный состав проекта.</p></div><div class="sticker"><span>полный проект</span><b>55 000 ₽</b><span>20–25 рабочих дней</span></div></section>
+    <div class="layout"><div>
+      <section class="section"><div class="section-head"><h2>01 / Основа айдентики</h2><span class="hint">Можно выбрать поэтапно</span></div><div class="cards" id="services"></div></section>
+      <section class="section"><div class="section-head"><h2>02 / Носители</h2><span class="hint"><b id="mediaCount">0</b> из 16 выбрано</span></div><div class="media-grid" id="media"></div></section>
+      <details class="proposal">
+        <summary>Подробнее о проекте</summary>
+        <div class="proposal-body">
+          <p class="proposal-lead">Quickies — кафе и велосипедное сообщество на пересечении городской культуры, кофе, совместных поездок и мероприятий. Задача проекта — создать цельную айдентику, которая одинаково уверенно работает в кафе, на упаковке, в социальных сетях, на событиях, форме и мерче.</p>
+          <div class="proposal-columns">
+            <div>
+              <h3>Исследование и направление</h3>
+              <p>Анализ текущего логотипа, материалов и референсов; изучение контекста кафе и велосообществ; определение характера бренда, визуальных ассоциаций и принципов будущей системы. Результат — согласованный мудборд и направление.</p>
+              <h3>Логотипная система</h3>
+              <p>На первом показе — три эскизных направления логотипа и маскота. После выбора одного направления создаются основной знак, wordmark Quickies, маскот, компактная версия, необходимые композиции и версии для светлого, тёмного, печатного и цифрового фона.</p>
+              <h3>Визуальная айдентика</h3>
+              <p>Фирменная палитра, типографическая иерархия, паттерны, формы, линии, рамки, плашки, композиционные принципы, система маскота, до шести простых иконок и рекомендации по фотостилю.</p>
+              <h3>Носители</h3>
+              <p>Выбранные позиции адаптируются после утверждения айдентики. Для производственных макетов потребуются развёртки и технические требования подрядчиков. Конструктивные чертежи, лекала и само производство не входят в разработку.</p>
+            </div>
+            <div>
+              <h3>Гайдлайн и файлы</h3>
+              <p>В руководстве фиксируются логотипная система, охранные поля, размеры, палитра, типографика, графические элементы, маскот, фотостиль и примеры носителей. Передаются SVG, EPS, PDF, PNG, JPG, RGB/CMYK-файлы и редактируемые шаблоны.</p>
+              <h3>Согласование и правки</h3>
+              <ul><li>до двух собранных кругов правок по логотипу;</li><li>до двух кругов по визуальной айдентике;</li><li>один круг технических корректировок по носителям.</li></ul>
+              <p>Комментарии передаются одним консолидированным списком. Смена утверждённого направления или возврат к предыдущему этапу рассчитываются отдельно.</p>
+              <h3>Сроки и оплата</h3>
+              <p>Ориентировочный срок полного проекта — 20–25 рабочих дней без учёта ожидания обратной связи. Оплата: 50% перед началом, 30% после утверждения логотипа и направления, 20% перед передачей финальных файлов.</p>
+              <h3>Не входит в стоимость</h3>
+              <p>Нейминг и слоган, бренд-стратегия, копирайтинг, интерьер и архитектура, печать и производство, фотосъёмка, регулярное ведение соцсетей, сайт, авторский надзор, лицензии на платные шрифты и юридическая регистрация товарного знака.</p>
+            </div>
+          </div>
+          <p class="proposal-note"><b>Важно:</b> возможность регистрации знака окончательно определяет Роспатент. Поиск сходных обозначений и подачу заявки рекомендуется проводить с патентным специалистом.</p>
+        </div>
+      </details>
+    </div>
+    <aside><div class="summary-top"><span>Ваш выбор</span><button class="reset" id="reset">Сбросить</button></div><div class="total" id="total">0 ₽</div><div class="total-note">Итоговая стоимость проекта</div><div class="bar"><i id="bar"></i></div><div class="picked" id="picked"></div><div class="actions"><button class="btn primary" id="share">Отправить PDF</button><button class="btn secondary" id="downloadPdf">Скачать PDF</button><button class="btn secondary" id="copy">Скопировать состав</button></div><p class="fine">Срок и финальная стоимость подтверждаются после фиксации состава. Печать, производство и лицензии на платные шрифты не включены.</p></aside>
+    </div>
+  </main>
+  <footer><div class="wrap">QUICKIES · Коммерческое предложение · Расчёт носит предварительный характер</div></footer><div class="toast" id="toast">Скопировано</div>
+  <script>
+    const services=[
+      {name:'Исследование и направление',price:5000,desc:'Анализ, характер бренда, референсы и мудборд.'},
+      {name:'Логотипная система',price:6000,desc:'3 эскизных направления, wordmark, маскот и версии знака.'},
+      {name:'Визуальная айдентика',price:15000,desc:'Цвет, типографика, графика, паттерны, фотостиль и до 6 иконок.'},
+      {name:'Гайдлайн и файлы',price:5000,desc:'Правила системы, макеты и финальные файлы для печати и digital.'}
+    ];
+    const media=[
+      {name:'Входная группа',desc:'Концепция вывески, режим работы и графика или наклейки на входную дверь.'},
+      {name:'Система меню',desc:'Меню-борд или настенное меню, шаблон печатного меню, структура разделов, цены и маркировки.'},
+      {name:'Стаканы навынос',desc:'Оформление стакана в двух размерах и дизайн манжеты при необходимости.'},
+      {name:'Упаковка еды',desc:'Один основной формат упаковки, фирменные наклейки и принцип маркировки продуктов.'},
+      {name:'Бумажный пакет',desc:'Композиция для пакета навынос, одноцветный и полноцветный варианты печати.'},
+      {name:'Форма сотрудников',desc:'Дизайн футболки и фартука, размещение логотипа, маскота и фирменной графики.'},
+      {name:'Социальные сети',desc:'Редактируемые шаблоны поста, stories и анонса, правила работы с фото, текстом и графикой.'},
+      {name:'Мероприятия и велорайды',desc:'Афиша, шаблон анонса заезда и карточка с датой, временем, маршрутом и точкой сбора.'},
+      {name:'Салфетки / плейсматы',desc:'Типографика, паттерны и фирменная графика для салфеток или бумаги на поднос.'},
+      {name:'Карты лояльности',desc:'Лицевая и оборотная стороны карты, механика отметок и подготовка макета к печати.'},
+      {name:'Навигация в кафе',desc:'Таблички, указатели, пиктограммы и единый принцип оформления внутренней навигации.'},
+      {name:'Оформление витрины',desc:'Композиция надписей, ценников, наклеек и графики для витрины кафе.'},
+      {name:'Шоперы',desc:'Один дизайн шопера с вариантами размещения логотипа, маскота, графики или типографики.'},
+      {name:'Кепки',desc:'Макет вышивки или печати, размещение знака и дополнительные фирменные детали.'},
+      {name:'Флаги и баннеры',desc:'Система типографики и графики для событийных баннеров, флагов и афиш разных форматов.'},
+      {name:'Велосипедные фляги',desc:'Круговая композиция для фляги, логотип, маскот и подготовка макета под технические требования.'}
+    ];
+    const rub=n=>new Intl.NumberFormat('ru-RU').format(n)+' ₽';
+    document.querySelector('#services').innerHTML=services.map((s,i)=>`<label class="card"><input type="checkbox" data-kind="service" data-name="${s.name}" data-price="${s.price}" checked><span class="check"></span><div class="num">ЭТАП 0${i+1}</div><div class="name">${s.name}</div><div class="desc">${s.desc}</div><div class="price">${rub(s.price)}</div></label>`).join('');
+    document.querySelector('#media').innerHTML=media.map(m=>`<label class="media" tabindex="0"><input type="checkbox" data-kind="media" data-name="${m.name}" data-price="1500" checked><span>${m.name}<em>в составе проекта · 1 500 ₽</em></span><span class="tip">${m.desc}</span></label>`).join('');
+    const inputs=[...document.querySelectorAll('input[type=checkbox]')], totalEl=document.querySelector('#total'), picked=document.querySelector('#picked'), toast=document.querySelector('#toast');
+    function state(){const chosen=inputs.filter(x=>x.checked),sv=chosen.filter(x=>x.dataset.kind==='service'),md=chosen.filter(x=>x.dataset.kind==='media');return{chosen,sv,md,total:chosen.reduce((a,x)=>a+Number(x.dataset.price),0)}}
+    function textSummary(){const s=state();return `QUICKIES — выбранный состав проекта\n\nОснова айдентики:\n${s.sv.length?s.sv.map(x=>'• '+x.dataset.name+' — '+rub(+x.dataset.price)).join('\n'):'— не выбрано'}\n\nНосители (${s.md.length}):\n${s.md.length?s.md.map(x=>'• '+x.dataset.name).join('\n'):'— не выбрано'}\n\nИтого: ${rub(s.total)}\nОриентировочный срок полного проекта: 20–25 рабочих дней.`}
+    function update(){const s=state();totalEl.textContent=rub(s.total);document.querySelector('#mediaCount').textContent=s.md.length;document.querySelector('#bar').style.width=Math.min(100,s.total/55000*100)+'%';picked.innerHTML=`<div><span>Этапы</span><b>${s.sv.length} из 4</b></div><div><span>Носители</span><b>${s.md.length} из 16</b></div><div><span>Полный проект</span><b>${s.total===55000?'55 000 ₽':'—'}</b></div>`;inputs.forEach(x=>{const unavailable=!x.checked&&s.total+Number(x.dataset.price)>55000;x.disabled=unavailable;x.closest('label').classList.toggle('blocked',unavailable)});localStorage.setItem('quickies-selection-v3',JSON.stringify(inputs.map(x=>x.checked)))}
+    inputs.forEach(x=>x.addEventListener('change',e=>{const s=state();if(s.total>55000){e.target.checked=false;flash('Максимальная стоимость проекта — 55 000 ₽')}update()}));
+    document.querySelector('#reset').onclick=()=>{inputs.forEach(x=>x.checked=false);update()};
+    function flash(msg){toast.textContent=msg;toast.classList.add('show');setTimeout(()=>toast.classList.remove('show'),1800)}
+    async function copy(){try{await navigator.clipboard.writeText(textSummary());flash('Состав скопирован')}catch(e){const t=document.createElement('textarea');t.value=textSummary();document.body.append(t);t.select();document.execCommand('copy');t.remove();flash('Состав скопирован')}}
+    document.querySelector('#copy').onclick=copy;
+    function rounded(ctx,x,y,w,h,r,fill){ctx.beginPath();ctx.roundRect(x,y,w,h,r);ctx.fillStyle=fill;ctx.fill()}
+    function fitText(ctx,text,maxWidth){const words=text.split(' '),lines=[];let line='';for(const word of words){const next=line?line+' '+word:word;if(ctx.measureText(next).width>maxWidth&&line){lines.push(line);line=word}else line=next}if(line)lines.push(line);return lines}
+    function fittedFont(ctx,text,maxWidth,start,weight='900'){let size=start;do{ctx.font=`${weight} ${size}px Arial`;size--}while(ctx.measureText(text).width>maxWidth&&size>12)}
+    function makeCard(){const s=state(),W=1080,H=Math.max(1350,550+Math.max(s.sv.length,s.md.length)*92),c=document.createElement('canvas');c.width=W;c.height=H;const x=c.getContext('2d');x.fillStyle='#f2f0e8';x.fillRect(0,0,W,H);x.fillStyle='#d9ff43';x.fillRect(0,0,W,250);x.fillStyle='#171714';x.font='900 46px Arial';x.fillText('QUICKIES ↗',64,76);x.font='700 24px Arial';x.fillText('ВЫБРАННЫЙ СОСТАВ ПРОЕКТА',64,134);x.font='900 78px Arial';x.fillText(rub(s.total),64,220);rounded(x,770,55,245,130,65,'#ff5b35');x.fillStyle='white';x.textAlign='center';x.font='700 20px Arial';x.fillText('ВАШ ВАРИАНТ',892,104);const variant=s.total===55000?'ПОЛНЫЙ':'ИНДИВИДУАЛЬНЫЙ';fittedFont(x,variant,205,30);x.fillText(variant,892,146);x.textAlign='left';x.fillStyle='#171714';x.font='900 38px Arial';x.fillText('ОСНОВА АЙДЕНТИКИ',64,335);x.fillText('НОСИТЕЛИ',560,335);x.strokeStyle='#171714';x.lineWidth=3;x.beginPath();x.moveTo(64,356);x.lineTo(510,356);x.moveTo(560,356);x.lineTo(1016,356);x.stroke();
+      const drawList=(items,left,top)=>{let y=top;x.font='700 24px Arial';for(const item of items){rounded(x,left,y-30,38,38,19,'#171714');x.fillStyle='#d9ff43';x.font='900 22px Arial';x.fillText('✓',left+9,y-3);x.fillStyle='#171714';x.font='700 23px Arial';const lines=fitText(x,item.dataset.name,385);lines.slice(0,2).forEach((line,i)=>x.fillText(line,left+54,y+i*27));x.fillStyle='#68675f';x.font='500 19px Arial';x.fillText(rub(+item.dataset.price),left+54,y+lines.length*27+3);y+=72+Math.max(0,lines.length-1)*20}};
+      drawList(s.sv,64,415);drawList(s.md,560,415);x.fillStyle='#171714';x.fillRect(0,H-185,W,185);x.fillStyle='white';x.font='700 23px Arial';x.fillText('ИТОГОВАЯ СТОИМОСТЬ',64,H-112);x.fillStyle='#d9ff43';x.font='900 54px Arial';x.fillText(rub(s.total),64,H-52);x.textAlign='right';x.fillStyle='white';x.font='500 20px Arial';x.fillText(`${s.sv.length} этапа · ${s.md.length} носителей`,1016,H-80);x.fillText('Предварительный расчёт',1016,H-48);return c}
+    function bytes(s){return new TextEncoder().encode(s)}
+    function joinBytes(parts){const size=parts.reduce((n,p)=>n+p.length,0),out=new Uint8Array(size);let at=0;for(const p of parts){out.set(p,at);at+=p.length}return out}
+    async function pdfBlob(){const canvas=makeCard(),jpg=await new Promise(resolve=>canvas.toBlob(resolve,'image/jpeg',.94)),img=new Uint8Array(await jpg.arrayBuffer()),pageW=595,pageH=Math.round(pageW*canvas.height/canvas.width),objects=[null];objects[1]=bytes('<< /Type /Catalog /Pages 2 0 R >>');objects[2]=bytes('<< /Type /Pages /Kids [3 0 R] /Count 1 >>');objects[3]=bytes(`<< /Type /Page /Parent 2 0 R /MediaBox [0 0 ${pageW} ${pageH}] /Resources << /XObject << /Im0 4 0 R >> >> /Contents 5 0 R >>`);objects[4]=joinBytes([bytes(`<< /Type /XObject /Subtype /Image /Width ${canvas.width} /Height ${canvas.height} /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length ${img.length} >>\nstream\n`),img,bytes('\nendstream')]);const content=`q\n${pageW} 0 0 ${pageH} 0 0 cm\n/Im0 Do\nQ`;objects[5]=bytes(`<< /Length ${content.length} >>\nstream\n${content}\nendstream`);const parts=[bytes('%PDF-1.4\n%Quickies\n')],offsets=[0];let pos=parts[0].length;for(let i=1;i<=5;i++){offsets[i]=pos;const obj=joinBytes([bytes(`${i} 0 obj\n`),objects[i],bytes('\nendobj\n')]);parts.push(obj);pos+=obj.length}const xref=pos;let table='xref\n0 6\n0000000000 65535 f \n';for(let i=1;i<=5;i++)table+=String(offsets[i]).padStart(10,'0')+' 00000 n \n';parts.push(bytes(table+`trailer\n<< /Size 6 /Root 1 0 R >>\nstartxref\n${xref}\n%%EOF`));return new Blob([joinBytes(parts)],{type:'application/pdf'})}
+    async function downloadPdf(){const blob=await pdfBlob(),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='Quickies-selection.pdf';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000);flash('PDF сохранён')}
+    document.querySelector('#downloadPdf').onclick=downloadPdf;
+    document.querySelector('#share').onclick=async()=>{const blob=await pdfBlob(),file=new File([blob],'Quickies-selection.pdf',{type:'application/pdf'}),data={files:[file]};if(navigator.share&&navigator.canShare&&navigator.canShare(data)){try{await navigator.share(data);return}catch(e){if(e.name==='AbortError')return}}await downloadPdf();flash('Браузер не передаёт файлы — PDF скачан для прикрепления')};
+    try{const saved=JSON.parse(localStorage.getItem('quickies-selection-v3'));if(Array.isArray(saved)&&saved.length===inputs.length){inputs.forEach((x,i)=>x.checked=saved[i]);while(state().total>55000){const last=[...inputs].reverse().find(x=>x.checked);if(!last)break;last.checked=false}}}catch(e){}update();
+  </script>
+</body>
+</html>
